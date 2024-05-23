@@ -3,52 +3,52 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import ngsolve as ng
 
-# Python program for Kruskal's algorithm to find 
-# Minimum Spanning Trees of given connected or disconnected, 
+# Python program for Kruskal's algorithm to find
+# Minimum Spanning Trees of given connected or disconnected,
 # undirected graph, with edges provided as an Nx3 list
 
-# Class to represent a graph 
-class Graph: 
-    def __init__(self, vertices): 
-        self.V = vertices 
-        self.graph = [] 
-        self.MST = [] 
+# Class to represent a graph
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = []
+        self.MST = []
   
     def addEdges(self, edge_list): 
         for edge in edge_list:
             self.graph.append(tuple(edge))
   
     def find(self, parent, i):
-        if parent[i] != i: 
-            parent[i] = self.find(parent, parent[i]) 
+        if parent[i] != i:
+            parent[i] = self.find(parent, parent[i])
         return parent[i]
   
-    def union(self, parent, rank, x, y): 
-        if rank[x] < rank[y]: 
-            parent[x] = y 
-        elif rank[x] > rank[y]: 
-            parent[y] = x 
+    def union(self, parent, rank, x, y):
+        if rank[x] < rank[y]:
+            parent[x] = y
+        elif rank[x] > rank[y]:
+            parent[y] = x
         else:
-            parent[y] = x 
+            parent[y] = x
             rank[x] += 1
     
-    def KruskalMST(self): 
+    def KruskalMST(self):
         result = []
         
         parent = []
         rank = []
-        for node in range(self.V): 
-            parent.append(node) 
+        for node in range(self.V):
+            parent.append(node)
             rank.append(0)
         i = 0
-        while i < len(self.graph): 
-            u, v, idx = self.graph[i] 
+        while i < len(self.graph):
+            u, v, idx = self.graph[i]
             i += 1
-            x = self.find(parent, u) 
-            y = self.find(parent, v) 
-            if x != y: 
-                result.append([u,v,idx]) 
-                self.union(parent, rank, x, y) 
+            x = self.find(parent, u)
+            y = self.find(parent, v)
+            if x != y:
+                result.append([u,v,idx])
+                self.union(parent, rank, x, y)
         self.MST = result
         return self.MST
 
@@ -62,7 +62,7 @@ def CoTreeBitArray(mesh, HCurlfes, plot = False):
     for edge in mesh.edges:
         index = HCurlfes.FreeDofs()[i]
         edge = [int(str(edge.vertices[0])[1:]), int(str(edge.vertices[1])[1:]), i]
-        i = i + 1
+        i += 1
         
         if HCurlfes.CouplingType(i)!=ng.comp.COUPLING_TYPE.UNUSED_DOF:
             if index == 1:
