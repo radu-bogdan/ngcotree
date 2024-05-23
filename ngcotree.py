@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
+import ngsolve as ng
 
 # Python program for Kruskal's algorithm to find 
 # Minimum Spanning Trees of given connected or disconnected, 
@@ -62,12 +63,14 @@ def CoTreeBitArray(mesh, HCurlfes, plot = False):
         index = HCurlfes.FreeDofs()[i]
         edge = [int(str(edge.vertices[0])[1:]), int(str(edge.vertices[1])[1:]), i]
         i = i + 1
-        if index == 1:
-            # Append only FreeDof edges.
-            edges.append(edge)
-        else:
-            # Non-Freedof edges appended at start!
-            edges.insert(0, edge)
+        
+        if HCurlfes.CouplingType(i)!=ng.comp.COUPLING_TYPE.UNUSED_DOF:
+            if index == 1:
+                # Append only FreeDof edges.
+                edges.append(edge)
+            else:
+                # Non-Freedof edges appended at start!
+                edges.insert(0, edge)
 
     edges = np.array(edges)
 
