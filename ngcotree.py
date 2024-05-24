@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 import ngsolve as ng
 
 # Python program for Kruskal's algorithm to find 
@@ -11,8 +12,8 @@ import ngsolve as ng
 class Graph: 
     def __init__(self, vertices): 
         self.V = vertices 
-        self.graph = [] 
-        self.MST = [] 
+        self.graph = []
+        self.MST = []
   
     def addEdges(self, edge_list): 
         for edge in edge_list:
@@ -64,7 +65,7 @@ def CoTreeBitArray(mesh, HCurlfes, plot = False):
         edge = [int(str(edge.vertices[0])[1:]), int(str(edge.vertices[1])[1:]), i]
         i = i + 1
         
-        if HCurlfes.CouplingType(i)!=ng.comp.COUPLING_TYPE.UNUSED_DOF:
+        if HCurlfes.CouplingType(i) != ng.comp.COUPLING_TYPE.UNUSED_DOF:
             if index == 1:
                 # Append only FreeDof edges.
                 edges.append(edge)
@@ -94,11 +95,23 @@ def CoTreeBitArray(mesh, HCurlfes, plot = False):
         points = np.array(points)
         nmst = np.array(mst)
 
-        lc = LineCollection(points[nmst[:,:2]])
-
         fig = plt.figure()
-        plt.gca().add_collection(lc)
-        plt.plot(points[:,0], points[:,1], 'r.')
+        if mesh.dim == 2:
+            lc = LineCollection(points[nmst[:,:2]])
+            plt.gca().add_collection(lc)
+            plt.plot(points[:,0], points[:,1], 'r.')
+        
+        if mesh.dim == 3:
+            ax = fig.add_subplot(projection='3d')
+            edges = [(points[start], points[end]) for start, end in nmst[:,:2]]
+            lc = Line3DCollection(edges)
+            ax.add_collection(lc)
+            ax.scatter(points[:,0], points[:,1], points[:,2], color = 'red')
+            ax.set_axis_off()
+
+            # Adjust the subplot to fill the figure
+            fig.subplots_adjust(left=0, right=1, bottom=0, top=1, wspace=0, hspace=0)
+            # fig.set_aspect('equal', adjustable='box')
 
         plt.show()
 
