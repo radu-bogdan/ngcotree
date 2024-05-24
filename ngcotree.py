@@ -110,6 +110,7 @@ def CoTreeBitArray(mesh, HCurlfes, plot = False):
             ax.set_axis_off()
 
             # Adjust the subplot to fill the figure
+            ax.set_position([0, 0, 1, 1])
             fig.subplots_adjust(left=0, right=1, bottom=0, top=1, wspace=0, hspace=0)
             # fig.set_aspect('equal', adjustable='box')
 
