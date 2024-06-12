@@ -1,2 +1,5 @@
 
 *.pyc
+.ipynb_checkpoints/ngcotree-checkpoint.py
+.ipynb_checkpoints/geometries-checkpoint.py
+.ipynb_checkpoints/example2D-checkpoint.ipynb
